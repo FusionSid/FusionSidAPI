@@ -10,7 +10,7 @@ from fastapi.responses import StreamingResponse
 
 tags_metadata = ["Memes"]
 
-armor = APIRouter(tags=tags_metadata)
+armor = APIRouter(tags=tags_metadata, prefix="/api/meme")
 
 
 async def generate_image(text):
@@ -38,7 +38,7 @@ async def generate_image(text):
 
 
 @armor.get(
-    "/api/armor/",
+    "/armor/",
     responses={200: {"content": {"image/png": {}}}},
     response_class=StreamingResponse,
 )
