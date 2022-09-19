@@ -23,4 +23,4 @@ async def run_the_code(request: Request, code: Code):
     """Code Execution Engine - Run code in a language"""
 
     output = await run_code(code.code, language=code.language, await_task=True)
-    return {"output": output}
+    return {"stdout": output[0], "stderr": output[1]}
