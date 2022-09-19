@@ -98,8 +98,8 @@ async def run_code(code: str, language: LANGUAGES, **kwargs) -> str:
         capture_output=True,
     ) # run the container
 
-    stderr = output.stdout.decode()  
-    stdout = output.stderr.decode()
+    stdout = output.stdout.decode()  
+    stderr = output.stderr.decode()
 
     if (
         len(stdout) > 4000
