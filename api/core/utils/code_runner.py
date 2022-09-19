@@ -96,12 +96,15 @@ async def run_code(code: str, language: LANGUAGES, **kwargs) -> str:
             random_code,
         ],
         capture_output=True,
-    ).stdout.decode()  # run the container
+    ) # run the container
+
+    stderr = output.stdout.decode()  
+    stdout = output.stderr.decode()
 
     if (
-        len(output) > 4000
+        len(stdout) > 4000
     ):  # if the output is more than 4000 characters it will crop it to 4000 characters
-        output = output[:4000]
+        stdout = stdout[:4000]
 
     if "await_task" in kwargs and kwargs["await_task"]:  # checks if this is true
         loop = asyncio.get_event_loop()
@@ -109,4 +112,4 @@ async def run_code(code: str, language: LANGUAGES, **kwargs) -> str:
     else:
         await cleanup(random_code)  # cleanup
 
-    return output
+    return [stdout, stderr]
