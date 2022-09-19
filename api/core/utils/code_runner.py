@@ -96,9 +96,9 @@ async def run_code(code: str, language: LANGUAGES, **kwargs) -> str:
             random_code,
         ],
         capture_output=True,
-    ) # run the container
+    )  # run the container
 
-    stdout = output.stdout.decode()  
+    stdout = output.stdout.decode()
     stderr = output.stderr.decode()
 
     if (

@@ -59,8 +59,8 @@ class FusionSid(FastAPI):
         self.state.limiter = Limiter(
             key_func=get_remote_address,
             default_limits=[
-                "30/minute"
-            ],  # set default rate limit to 30 requests per minute
+                "42/minute"
+            ],  # set default rate limit to 42 requests per minute
         )
         self.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
         self.add_middleware(SlowAPIMiddleware)

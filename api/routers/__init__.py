@@ -13,7 +13,7 @@ from .image import get_color_endpoints, qrcode_endpoints
 from .meme import meme_endpoints
 from .filters import color_filter_endpoint, blur_filter_endpoint
 from .minecraft import hypixel_stat_endpoints
-
+from .redirect import redirect_endpoints
 
 routes = [
     fun_text_converting_endpoints,
@@ -28,4 +28,5 @@ routes = [
     color_filter_endpoint,
     blur_filter_endpoint,
     hypixel_stat_endpoints,
+    redirect_endpoints,
 ] + meme_endpoints
