@@ -1,0 +1,13 @@
+aiohttp
+Babel
+colorthief
+git+https://github.com/Pycord-Development/pycord.git
+fastapi
+Pillow
+pydantic
+python-dotenv
+qrcode
+rich
+slowapi
+uvicorn
+python-multipart

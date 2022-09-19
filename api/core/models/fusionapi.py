@@ -21,7 +21,7 @@ DESCRIPTION = """
 A multipurpose API 
 
 #### Source Code:
-[https://github.com/FusionSid/FusionSidsAPI](https://github.com/FusionSid/FusionSidsAPI)
+[https://github.com/FusionSid/FusionSidAPI](https://github.com/FusionSid/FusionSidAPI)
 
 #### Contact:
 Discord: FusionSid#3645
