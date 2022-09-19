@@ -17,7 +17,7 @@ from core.models import FusionSid
 load_dotenv()
 
 __version__ = "2.0.0"
-__author__ = ["Siddhesh Zantye"]
+__author__ = ["FusionSid"]
 
 app = FusionSid(__version__)
 console = Console()

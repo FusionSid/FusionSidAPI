@@ -11,3 +11,4 @@ rich
 slowapi
 uvicorn
 python-multipart
+aiosqlite
