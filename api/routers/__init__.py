@@ -12,6 +12,8 @@ from .fun import fun_text_endpoints
 from .image import get_color_endpoints, qrcode_endpoints
 from .meme import meme_endpoints
 from .filters import color_filter_endpoint, blur_filter_endpoint
+from .minecraft import hypixel_stat_endpoints
+
 
 routes = [
     fun_text_converting_endpoints,
@@ -25,4 +27,5 @@ routes = [
     qrcode_endpoints,
     color_filter_endpoint,
     blur_filter_endpoint,
+    hypixel_stat_endpoints,
 ] + meme_endpoints

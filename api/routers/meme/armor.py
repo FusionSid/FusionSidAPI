@@ -2,10 +2,8 @@ import os
 import textwrap
 from io import BytesIO
 
-from PIL import Image
-from PIL import ImageFont
-from PIL import ImageDraw
 from fastapi import APIRouter
+from PIL import ImageFont, ImageDraw, Image
 from fastapi.responses import StreamingResponse
 
 tags_metadata = ["Memes"]
