@@ -1,6 +1,8 @@
 import aiohttp
-import discord
+import unicodedata
 from io import BytesIO
+
+import discord
 from PIL import Image, ImageDraw, ImageFont
 
 
@@ -89,7 +91,7 @@ class Card:
 
         # discord.Member Attributes
         self.id = member.id
-        self.name = member.name
+        self.name = unicodedata.normalize("NFKD", member.name)
         self.status = member.status
         self.activity = member.activity
         if show_hypesquad:
@@ -121,7 +123,6 @@ class Card:
             discord_image = Image.new("RGBA", (450, 170), "#161a1d")
 
         # Fonts
-        font_1 = ImageFont.truetype("assets/fonts/uni_sans_heavy.otf", 20)
         font_2 = ImageFont.truetype("assets/fonts/whitneybold.otf", 50)
 
         font_3 = ImageFont.truetype("assets/fonts/whitneylight.otf", 40)
@@ -309,8 +310,8 @@ class Card:
                 )
 
             discord_image.alpha_composite(flag, (410, 101))
-
-        activity = self.activity.name
+    
+        activity = unicodedata.normalize("NFKD", (self.activity.name))
         if len(activity) > 23:
             activity = f"{activity[:23]}..."
 
