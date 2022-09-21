@@ -94,10 +94,10 @@ class Card:
         self.name = unicodedata.normalize("NFKD", member.name)
         self.status = member.status
         self.activity = member.activity
-        if show_hypesquad:
+        self.flags = False
+        if show_hypesquad and not member.bot:
             self.flags = member.public_flags
-        else:
-            self.flags = False
+            
         self.avatar_url = member.avatar.url
         self.discriminator = member.discriminator
 
@@ -310,7 +310,7 @@ class Card:
                 )
 
             discord_image.alpha_composite(flag, (410, 101))
-    
+
         activity = unicodedata.normalize("NFKD", (self.activity.name))
         if len(activity) > 23:
             activity = f"{activity[:23]}..."
