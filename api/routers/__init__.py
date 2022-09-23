@@ -9,7 +9,7 @@ from .converters import (
 from .discord_card import client, discord_card_endpoints
 from .code_execution import runcode_endpoints
 from .fun import fun_text_endpoints
-from .image import get_color_endpoints, qrcode_endpoints
+from .image import get_color_endpoints, qrcode_endpoints, ocr_endpoints
 from .meme import meme_endpoints
 from .filters import color_filter_endpoint, blur_filter_endpoint
 from .minecraft import hypixel_stat_endpoints
@@ -31,4 +31,5 @@ routes = [
     hypixel_stat_endpoints,
     redirect_endpoints,
     temp_host_endpoints,
+    ocr_endpoints
 ] + meme_endpoints
