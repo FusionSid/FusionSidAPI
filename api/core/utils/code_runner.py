@@ -102,6 +102,7 @@ async def run_code(code: str, language: LANGUAGES, **kwargs) -> str:
 
     stdout = output.stdout.decode()
     stderr = output.stderr.decode()
+    return_code = output.returncode
 
     if "await_task" in kwargs and kwargs["await_task"]:  # checks if this is true
         loop = asyncio.get_event_loop()
@@ -109,7 +110,7 @@ async def run_code(code: str, language: LANGUAGES, **kwargs) -> str:
     else:
         await cleanup(random_code)  # cleanup
 
-    return [stdout, stderr]
+    return [stdout, stderr, return_code]
 
 
 async def loop_docker_cleanup():

@@ -20,7 +20,9 @@ runcode_endpoints = APIRouter(tags=tags_metadata, prefix="/api")
 @runcode_endpoints.post("/runcode")
 @limiter.limit("10/minute")
 async def run_the_code(request: Request, code: Code):
-    """Code Execution Engine - Run code in a language"""
+    """
+    Code Execution Engine - Run code in a language (thats supported)
+    """
 
     output = await run_code(code.code, language=code.language, await_task=True)
-    return {"stdout": output[0], "stderr": output[1]}
+    return {"stdout": output[0], "stderr": output[1], "return_code": output[2]}
