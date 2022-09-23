@@ -5,51 +5,82 @@ from slowapi import Limiter
 from dotenv import load_dotenv
 from slowapi.util import get_remote_address
 from fastapi.responses import StreamingResponse
-from fastapi import APIRouter, UploadFile, Request
+from fastapi import APIRouter, UploadFile, Request, Query
 
 from core.database import get_file, insert_file, get_full_db
 
 load_dotenv()
 
-tags_metadata = ["Temporarily host a file for 24h"]
+tags_metadata = ["Temporarily host a file for 48h"]
 temp_host_endpoints = APIRouter(tags=tags_metadata, prefix="/api/temphost")
 limiter = Limiter(key_func=get_remote_address)
+
+FILE_TYPES = {
+    # image
+    "png": "image/png",
+    "jpg": "image/jpg",
+    "jpeg": "image/jpeg",
+    "gif": "image/gif",
+    "webp": "image/webp",
+    "bmp": "image/bmp",
+    "svg": "image/svg+xml",
+    # video
+    "mp4": "video/mp4",
+    "webm": "video/webm",
+    "mpeg": "video/mpeg",
+    # audio
+    "mp3": "audio/mpeg",
+    "aac": "audio/aac",
+    "midi": "audio/midi",
+    "wav": "audio/wav",
+    # file
+    "txt": "text/plain",
+    "json": "application/json",
+    "javascript": "text/javascript",
+    "csv": "text/csv",
+    "plain": "text/plain",
+    "pdf": "application/pdf",
+    "xml": "application/xml",
+    # font
+    "ttf": "font/ttf",
+    "otf": "font/otf",
+    # archive
+    "zip": "application/zip",
+    "7z": "application/x-7z-compressed",
+    "gzip": "application/gzip",
+    # other / unknown / binary
+    "binary": "application/octet-stream",
+    "other": "application/octet-stream",
+}
+
+# In case i forget: https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types
 
 
 @temp_host_endpoints.post("/upload")
 @limiter.limit("15/minute")
 async def post_upload(
-    request: Request, file: UploadFile, file_type: str, file_code: str = None
+    request: Request,
+    file: UploadFile,
+    file_type: str = Query("png", enum=tuple(FILE_TYPES.keys())),
+    file_code: str = None,
 ):
     """
-    Lets you upload a file
+    Lets you upload a file and keep it hosted for 48 hours
     Max size 50mb
 
-    Supported file types: png, txt, jpeg, jpg, gif, mp4, mp3, json, bmp, csv, plain, ttf, pdf, otf, svg, zip
-    """
+    Supported file types: {}
+    """.format(
+        FILE_TYPES.keys()
+    )
+
     if file_code is not None and len(file_code) > 10:
         file_code = None
 
-    ftypes = [
-        "png",
-        "txt",
-        "jpeg",
-        "jpg",
-        "gif",
-        "mp4",
-        "mp3",
-        "json",
-        "bmp",
-        "csv",
-        "plain",
-        "ttf",
-        "pdf",
-        "otf",
-        "svg",
-        "zip",
-    ]
-    if file_type.lower() not in ftypes:
-        return {"error": "Must include valid file type", "options": ", ".join(ftypes)}
+    if file_type.lower() not in FILE_TYPES:
+        return {
+            "error": "Must include valid file type",
+            "options": ", ".join(FILE_TYPES),
+        }
 
     file = await file.read()
     if len(file) > 50_000_000:  # in bytes
@@ -78,28 +109,10 @@ async def getfile(request: Request, code: str):
 
     file_type = db_data[3].lower()
 
-    mtypes = {
-        "png": "image/png",
-        "txt": "text/plain",
-        "jpeg": "image/jpeg",
-        "jpg": "image/jpg",
-        "gif": "image/gif",
-        "mp4": "video/mp4",
-        "mp3": "audio/mpeg",
-        "json": "application/json",
-        "bmp": "image/bmp",
-        "csv": "text/csv",
-        "plain": "text/plain",
-        "ttf": "font/ttf",
-        "pdf": "application/pdf",
-        "otf": "font/otf",
-        "svg": "image/svg+xml",
-        "zip": "application/zip",
-    }
+    if file_type in FILE_TYPES:
+        return StreamingResponse(file, media_type=FILE_TYPES[file_type])
 
-    if file_type in mtypes:
-        return StreamingResponse(file, media_type=mtypes[file_type])
-    return {"error": "Incorrect file type"}
+    return StreamingResponse(file, media_type=FILE_TYPES["other"])
 
 
 @temp_host_endpoints.get("/stats")
