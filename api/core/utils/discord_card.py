@@ -97,7 +97,7 @@ class Card:
         self.flags = False
         if show_hypesquad and not member.bot:
             self.flags = member.public_flags
-            
+
         self.avatar_url = member.avatar.url
         self.discriminator = member.discriminator
 

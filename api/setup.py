@@ -28,6 +28,15 @@ async def main():
             url TEXT
             )"""
         )
+        await db.execute(
+            """CREATE TABLE IF NOT EXISTS Files (
+            file_id INTEGER PRIMARY KEY AUTOINCREMENT,
+            time_added INTEGER,
+            file_code TEXT,
+            file_type TEXT,
+            file_data BLOB
+            )"""
+        )
 
 
 asyncio.run(main())
