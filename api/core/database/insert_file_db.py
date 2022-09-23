@@ -75,7 +75,7 @@ async def get_full_db():
     return data
 
 
-async def loop_cleanup():
+async def loop_temphost_cleanup():
     # Deletes all files that have been in the db for more than 24h
     delete_interval = 86_400  # seconds
 

@@ -101,6 +101,7 @@ async def getfile(request: Request, code: str):
         return StreamingResponse(file, media_type=mtypes[file_type])
     return {"error": "Incorrect file type"}
 
+
 @temp_host_endpoints.get("/stats")
 async def stats():
     """

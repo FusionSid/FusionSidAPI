@@ -31,10 +31,10 @@ async def cleanup(random_code: str) -> None:
         capture_output=True,
     ).stdout.decode()
 
-    # >/dev/null 2>&1 just makes it so it does not print the output of the command to terminal
-    os.system(f"docker container kill {container}")
-    os.system(f"docker container rm -f {container}")
-    os.system(f"docker image rm -f {image}")
+    # >/dev/nulljust makes it so it does not print the output of the command to terminal
+    os.system(f"docker container kill {container} > /dev/null")
+    os.system(f"docker container rm -f {container} > /dev/null")
+    os.system(f"docker image rm -f {image} > /dev/null")
 
 
 async def run_code(code: str, language: LANGUAGES, **kwargs) -> str:
@@ -88,7 +88,7 @@ async def run_code(code: str, language: LANGUAGES, **kwargs) -> str:
             "timeout",
             "-s",
             "KILL",
-            "3",
+            "5",
             "docker",
             "run",
             "--rm",
@@ -103,11 +103,6 @@ async def run_code(code: str, language: LANGUAGES, **kwargs) -> str:
     stdout = output.stdout.decode()
     stderr = output.stderr.decode()
 
-    if (
-        len(stdout) > 4000
-    ):  # if the output is more than 4000 characters it will crop it to 4000 characters
-        stdout = stdout[:4000]
-
     if "await_task" in kwargs and kwargs["await_task"]:  # checks if this is true
         loop = asyncio.get_event_loop()
         loop.create_task(cleanup(random_code))  # cleanup
@@ -115,3 +110,7 @@ async def run_code(code: str, language: LANGUAGES, **kwargs) -> str:
         await cleanup(random_code)  # cleanup
 
     return [stdout, stderr]
+
+
+async def loop_docker_cleanup():
+    run(["docker", "system", "prune", "-a", "-f", "--volumes"], stdout=DEVNULL)

@@ -13,7 +13,8 @@ from fastapi.responses import RedirectResponse
 
 from routers import routes, client
 from core.models import FusionSid
-from core.database import loop_cleanup
+from core.database import loop_temphost_cleanup
+from core.utils import loop_docker_cleanup
 
 load_dotenv()
 
@@ -36,7 +37,8 @@ async def startup():
     asyncio.create_task(client.start(TOKEN))
 
     loop = asyncio.get_event_loop()
-    loop.create_task(loop_cleanup())
+    loop.create_task(loop_temphost_cleanup())
+    loop.create_task(loop_docker_cleanup())
 
     console.log("[API] Starting...")
 
