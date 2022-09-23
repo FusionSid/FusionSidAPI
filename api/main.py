@@ -13,6 +13,7 @@ from fastapi.responses import RedirectResponse
 
 from routers import routes, client
 from core.models import FusionSid
+from core.database import loop_cleanup
 
 load_dotenv()
 
@@ -33,6 +34,10 @@ for route in routes:
 async def startup():
     TOKEN = os.environ["TOKEN"]
     asyncio.create_task(client.start(TOKEN))
+
+    loop = asyncio.get_event_loop()
+    loop.create_task(loop_cleanup())
+
     console.log("[API] Starting...")
 
 

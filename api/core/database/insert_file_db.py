@@ -2,6 +2,7 @@ import os
 import time
 import string
 import random
+import asyncio
 
 import aiosqlite
 from dotenv import load_dotenv
@@ -65,3 +66,37 @@ async def insert_file(file_data: bytes, file_type: str, custom_code: str = None)
 
         await db.commit()
     return code
+
+
+async def get_full_db():
+    async with aiosqlite.connect(DB_PATH) as db:
+        cur = await db.execute("SELECT * FROM Files")
+        data = await cur.fetchall()
+    return data
+
+
+async def loop_cleanup():
+    # Deletes all files that have been in the db for more than 24h
+    delete_interval = 86_400  # seconds
+
+    # Checks every 6 hours
+    check_every = 21_600  # seconds
+
+    while True:
+        time_right_now = int(time.time())
+        data = await get_full_db()
+        for file in data:
+            time_added = file[1]
+            if (time_right_now - time_added) > delete_interval:
+                async with aiosqlite.connect(DB_PATH) as db:
+                    await db.execute(
+                        "DELETE FROM Files WHERE file_id=? and file_code=?",
+                        (
+                            file[0],
+                            file[2],
+                        ),
+                    )
+                    await db.commit()
+                    await db.execute("VACUUM")
+
+        await asyncio.sleep(check_every)
