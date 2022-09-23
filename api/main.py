@@ -34,7 +34,7 @@ for route in routes:
 @app.on_event("startup")
 async def startup():
     TOKEN = os.environ["TOKEN"]
-    # asyncio.create_task(client.start(TOKEN))
+    asyncio.create_task(client.start(TOKEN))
 
     loop = asyncio.get_event_loop()
     loop.create_task(loop_temphost_cleanup())
