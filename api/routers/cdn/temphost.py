@@ -59,7 +59,7 @@ async def post_upload(
     }
 
 
-@temp_host_endpoints.get("/f")
+@temp_host_endpoints.get("/api/temphost/file")
 @limiter.limit("42/minute")
 async def getfile(request: Request, code: str):
     """
