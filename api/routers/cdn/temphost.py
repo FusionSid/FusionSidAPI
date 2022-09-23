@@ -1,19 +1,22 @@
+import os
 from io import BytesIO
 
 from slowapi import Limiter
+from dotenv import load_dotenv
 from slowapi.util import get_remote_address
 from fastapi.responses import StreamingResponse
 from fastapi import APIRouter, UploadFile, Request
 
-from core.database import get_file, insert_file
+from core.database import get_file, insert_file, get_full_db
 
+load_dotenv()
 
 tags_metadata = ["Temporarily host a file for 24h"]
-temp_host_endpoints = APIRouter(tags=tags_metadata)
+temp_host_endpoints = APIRouter(tags=tags_metadata, prefix="/api/temphost")
 limiter = Limiter(key_func=get_remote_address)
 
 
-@temp_host_endpoints.post("/api/temphost/upload")
+@temp_host_endpoints.post("/upload")
 @limiter.limit("15/minute")
 async def post_upload(
     request: Request, file: UploadFile, file_type: str, file_code: str = None
@@ -55,11 +58,11 @@ async def post_upload(
     code = await insert_file(bytes(file), file_type, file_code)
     return {
         "code": code,
-        "url": f"https://api.fusionsid.xyz/f?code={code}",
+        "url": f"https://api.fusionsid.xyz/api/temphost/file?code={code}",
     }
 
 
-@temp_host_endpoints.get("/api/temphost/file")
+@temp_host_endpoints.get("/file")
 @limiter.limit("42/minute")
 async def getfile(request: Request, code: str):
     """
@@ -97,3 +100,15 @@ async def getfile(request: Request, code: str):
     if file_type in mtypes:
         return StreamingResponse(file, media_type=mtypes[file_type])
     return {"error": "Incorrect file type"}
+
+@temp_host_endpoints.get("/stats")
+async def stats():
+    """
+    Stats on file uploaded
+    """
+    DB_PATH = os.environ["MAIN_DB"] + "/main.db"
+    db_size = os.path.getsize(DB_PATH)
+    return {
+        "files_uploaded": len((await get_full_db())),
+        "db": f"{round((db_size / 1000000), 2)}mb",
+    }
