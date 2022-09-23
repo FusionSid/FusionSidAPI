@@ -6,7 +6,9 @@ from subprocess import run, DEVNULL
 from typing import Literal, get_args
 
 
-LANGUAGES = Literal["rickroll_lang", "python", "node"]  # supported languages
+LANGUAGES = Literal[
+    "rickroll_lang", "python", "node", "c", "cpp"
+]  # supported languages
 
 
 async def cleanup(random_code: str) -> None:
