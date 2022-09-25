@@ -8,6 +8,7 @@ from fastapi import APIRouter, UploadFile
 tags_metadata = ["Image"]
 ocr_endpoints = APIRouter(tags=tags_metadata, prefix="/api/image")
 
+
 @ocr_endpoints.post("/ocr/")
 async def image_ocr(request: Request, image: UploadFile):
     """

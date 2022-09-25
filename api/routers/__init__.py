@@ -31,5 +31,5 @@ routes = [
     hypixel_stat_endpoints,
     redirect_endpoints,
     temp_host_endpoints,
-    ocr_endpoints
+    ocr_endpoints,
 ] + meme_endpoints
