@@ -12,3 +12,4 @@ slowapi
 uvicorn
 python-multipart
 aiosqlite
+pytesseract
