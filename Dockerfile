@@ -9,7 +9,9 @@ RUN curl -sS https://bootstrap.pypa.io/get-pip.py | python3.10
 
 WORKDIR /
 COPY ./ ./
-WORKDIR /api
+WORKDIR /
 
-RUN pip install -r requirements.txt --no-cache-dir
-CMD ["python3", "main.py"]
+RUN pip install -r api/requirements.txt --no-cache-dir
+
+CMD ["make", "run"]
+# Run with sudo docker run -p 443:443 --privileged=true -v /var/run/docker.sock:/var/run/docker.sock
