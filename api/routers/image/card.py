@@ -24,7 +24,7 @@ async def get_card():
 
 
 @card_endpoint.get("/random-card")
-async def random_card(link: str):
+async def random_card():
     """Returns a random card"""
 
     file = await get_card()
