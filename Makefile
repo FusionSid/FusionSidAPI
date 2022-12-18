@@ -5,7 +5,7 @@
 run:
 	@cd api; uvicorn main:app --port=443 --host="0.0.0.0" --ssl-certfile cert.pem --ssl-keyfile key.pem
 dev:
-	@cd api; python3 main.py
+	@cd api; uvicorn main:app
 
 # delete all those trash files because even though they are ignored by git IT ANNOYS ME SO MUCH
 clean:
