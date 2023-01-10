@@ -73,7 +73,7 @@ async def post_upload(
         FILE_TYPES.keys()
     )
 
-    if file_code is not None and len(file_code) > 10 and "/" not in file_code:
+    if file_code is not None and len(file_code) > 10 and not file_code.isalnum():
         file_code = None
 
     if file_type.lower() not in FILE_TYPES:
