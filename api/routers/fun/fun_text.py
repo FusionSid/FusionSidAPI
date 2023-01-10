@@ -81,3 +81,31 @@ async def random_truth_and_dare(request: Request):
         "dare": await get_data("dare"),
         "computers_choice": random.choice(["truth", "dare"]),
     }
+
+
+@fun_text_endpoints.get("/joke")
+async def random_joke(request: Request):
+    """Gets a random joke"""
+
+    return {"joke": await get_data("jokes")}
+
+
+@fun_text_endpoints.get("/joke")
+async def random_titled_joke(request: Request):
+    """Gets a random titled joke"""
+
+    return {"joke": await get_data("titled_jokes")}
+
+
+@fun_text_endpoints.get("/programming-joke")
+async def random_programming_joke(request: Request):
+    """Gets a random titled programming joke"""
+
+    return {"joke": await get_data("programming_jokes")}
+
+
+@fun_text_endpoints.get("/programming-excuse")
+async def random_programming_excuse(request: Request):
+    """Gets a random titled programming joke"""
+
+    return {"excuse": await get_data("programming_excuses")}
