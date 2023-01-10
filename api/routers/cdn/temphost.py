@@ -73,7 +73,7 @@ async def post_upload(
         FILE_TYPES.keys()
     )
 
-    if file_code is not None and len(file_code) > 10:
+    if file_code is not None and len(file_code) > 10 and "/" not in file_code:
         file_code = None
 
     if file_type.lower() not in FILE_TYPES:
@@ -89,7 +89,7 @@ async def post_upload(
     code = await insert_file(bytes(file), file_type, file_code)
     return {
         "code": code,
-        "url": f"https://api.fusionsid.xyz/api/temphost/file?code={code}",
+        "url": f"https://api.fusionsid.xyz/f/{code}",
     }
 
 
