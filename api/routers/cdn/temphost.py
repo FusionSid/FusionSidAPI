@@ -12,7 +12,7 @@ from core.database import get_file, insert_file, get_full_db
 load_dotenv()
 
 tags_metadata = ["Temporarily host a file for 48h"]
-temp_host_endpoints = APIRouter(tags=tags_metadata, prefix="/api")
+temp_host_endpoints = APIRouter(tags=tags_metadata)
 limiter = Limiter(key_func=get_remote_address)
 
 FILE_TYPES = {
@@ -56,7 +56,7 @@ FILE_TYPES = {
 # In case i forget: https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types
 
 
-@temp_host_endpoints.post("/temphost/upload")
+@temp_host_endpoints.post("/api/temphost/upload")
 @limiter.limit("15/minute")
 async def post_upload(
     request: Request,
@@ -115,7 +115,7 @@ async def getfile(request: Request, code: str):
     return StreamingResponse(file, media_type=FILE_TYPES["other"])
 
 
-@temp_host_endpoints.get("/temphost/stats")
+@temp_host_endpoints.get("/api/temphost/stats")
 async def stats():
     """
     Stats on file uploaded
