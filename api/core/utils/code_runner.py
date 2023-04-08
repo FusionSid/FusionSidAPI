@@ -5,6 +5,7 @@ import asyncio
 from subprocess import run, DEVNULL
 from typing import Literal, get_args
 
+from fastapi import HTTPException
 
 LANGUAGES = Literal[
     "rickroll_lang", "python", "node", "c", "cpp"
@@ -37,7 +38,7 @@ async def cleanup(random_code: str) -> None:
     os.system(f"docker image rm -f {image} > /dev/null")
 
 
-async def run_code(code: str, language: LANGUAGES, **kwargs) -> str:
+async def run_code(code: str, language: LANGUAGES, **kwargs) -> list:
     """
     Runs the code given in a language
 
@@ -58,10 +59,13 @@ async def run_code(code: str, language: LANGUAGES, **kwargs) -> str:
     if language not in list(
         get_args(LANGUAGES)
     ):  # Check if language is in the list of languages
-        return {
-            "error": "Not a valid lanuage",
-            "supported_languages": list(get_args(LANGUAGES)),
-        }
+        raise HTTPException(
+            detail={
+                "error": "Not a valid lanuage",
+                "supported_languages": list(get_args(LANGUAGES)),
+            },
+            status_code=422,
+        )
 
     random_code_list = (
         string.ascii_lowercase + string.digits
