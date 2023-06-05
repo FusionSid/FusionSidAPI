@@ -1,2 +1,3 @@
-new api
-merged all other apis + better code?
+# FusionSid API
+
+A multipurpose REST api created by FusionSid
