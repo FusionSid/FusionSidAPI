@@ -8,6 +8,7 @@ from .image import (
     get_color_endpoints,
     ocr_endpoints,
 )
+from .fun import fun_text_endpoints
 
 router_list = [
     other_router,
@@ -16,5 +17,6 @@ router_list = [
     qrcode_endpoints,
     get_color_endpoints,
     ocr_endpoints,
+    fun_text_endpoints,
 ]
 middleware_list = []
