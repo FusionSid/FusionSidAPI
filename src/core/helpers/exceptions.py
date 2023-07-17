@@ -74,9 +74,23 @@ class InvalidColorProvided(HTTPException):
         super().__init__(status_code, detail)
 
 
+class FailedToFetchError(HTTPException):
+    def __init__(self, provided: str) -> None:
+        status_code = 400
+        detail = {
+            "success": False,
+            "detail": "Could not fetch data from the url provided",
+            "provided": provided,
+            "tip": "URL is most likely invalid or the wrong link",
+        }
+
+        super().__init__(status_code, detail)
+
+
 class APIHTTPExceptions:
     """
     All the api's http exceptions in a class so they are all together
     """
 
     INVALID_COLOR_PROVIDED = InvalidColorProvided
+    FAILED_TO_FETCH_ERROR = FailedToFetchError
