@@ -9,6 +9,7 @@ from .image import (
     ocr_endpoints,
 )
 from .fun import fun_text_endpoints
+from .filter import blur_filter_endpoint
 
 router_list = [
     other_router,
@@ -18,5 +19,6 @@ router_list = [
     get_color_endpoints,
     ocr_endpoints,
     fun_text_endpoints,
+    blur_filter_endpoint,
 ]
 middleware_list = []
