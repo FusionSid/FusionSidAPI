@@ -1,4 +1,5 @@
 rich
+qrcode
 slowapi
 uvicorn
 fastapi
