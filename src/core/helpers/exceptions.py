@@ -9,6 +9,7 @@ from rich.text import Text
 from rich.panel import Panel
 from rich.console import Console
 from fastapi import HTTPException
+from PIL.ImageColor import colormap
 
 
 class BaseException(Exception):
@@ -47,8 +48,11 @@ class InvalidDevmodeValue(RichBaseException):
         )
         sys.exit(1)
 
+
 class NoAssetsDirectory(RichBaseException):
-    def __init__(self,) -> None:
+    def __init__(
+        self,
+    ) -> None:
         super().__init__(
             "No Assets Directory!!!",
             "Please ensure that the assets directory exists as it is required for the api to function",
@@ -56,14 +60,15 @@ class NoAssetsDirectory(RichBaseException):
         sys.exit(1)
 
 
-class ExampleHTTPException(HTTPException):
-    def __init__(self, data: str) -> None:
-        status_code = 422
+class InvalidColorProvided(HTTPException):
+    def __init__(self, provided: str | int | list) -> None:
+        status_code = 400
         detail = {
             "success": False,
-            "detail": "Failed because you gave me bad input",
-            "data_given": data,
-            "tip": "Get better skill issue",
+            "detail": "The color that you provided was invalid. ",
+            "provided": provided,
+            "tip": "It must be either a hex color prefixed with # or one of the supported colors below",
+            "supported_colors": colormap,
         }
 
         super().__init__(status_code, detail)
@@ -74,4 +79,4 @@ class APIHTTPExceptions:
     All the api's http exceptions in a class so they are all together
     """
 
-    EXAMPLE_HTTP_EXCEPTION = ExampleHTTPException
+    INVALID_COLOR_PROVIDED = InvalidColorProvided
