@@ -12,9 +12,10 @@ CAPY_IMAGES = listdir(CAPY_DIRECTORY)
 
 capy_endpoint = APIRouter(tags=["Image"], prefix="/api/image")
 
+
 @capy_endpoint.get("/random-capy")
 async def random_card():
     """Returns a random capybara image"""
-    
+
     image_path = join(CAPY_DIRECTORY, random.choice(CAPY_IMAGES))
     return FileResponse(image_path, media_type="image/jpeg")

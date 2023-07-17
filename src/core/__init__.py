@@ -3,7 +3,7 @@ __all__ = (
     "FusionSidAPI",
     "limiter",
     "APIHTTPExceptions",
-    "ASSETS_DIRECTORY"
+    "ASSETS_DIRECTORY",
 )
 
 from .db import TORTOISE_CONFIG
