@@ -10,6 +10,11 @@ from .image import (
 )
 from .fun import fun_text_endpoints
 from .filter import blur_filter_endpoint
+from .converters import (
+    binary_converting_endpoints,
+    fun_text_converting_endpoints,
+    hex_converting_endpoints,
+)
 
 router_list = [
     other_router,
@@ -20,5 +25,8 @@ router_list = [
     ocr_endpoints,
     fun_text_endpoints,
     blur_filter_endpoint,
+    binary_converting_endpoints,
+    fun_text_converting_endpoints,
+    hex_converting_endpoints,
 ]
 middleware_list = []
