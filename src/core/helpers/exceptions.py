@@ -4,6 +4,7 @@ This module contains exceptions to make development easier
 
 import sys
 from enum import Enum
+from typing import Any
 
 from rich.text import Text
 from rich.panel import Panel
@@ -87,6 +88,18 @@ class FailedToFetchError(HTTPException):
         super().__init__(status_code, detail)
 
 
+class InvalidXProvided(HTTPException):
+    def __init__(self, thing: str, provided: Any) -> None:
+        status_code = 400
+        detail = {
+            "success": False,
+            "detail": f"The {thing} provided was not valid",
+            "provided": provided,
+        }
+
+        super().__init__(status_code, detail)
+
+
 class APIHTTPExceptions:
     """
     All the api's http exceptions in a class so they are all together
@@ -94,3 +107,4 @@ class APIHTTPExceptions:
 
     INVALID_COLOR_PROVIDED = InvalidColorProvided
     FAILED_TO_FETCH_ERROR = FailedToFetchError
+    INVALID_X_PROVIDED = InvalidXProvided
