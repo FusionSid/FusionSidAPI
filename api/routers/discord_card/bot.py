@@ -25,6 +25,7 @@ async def on_ready():
 async def generate_discord_card(
     request: Request,
     user_id: int,
+    pfp_only: bool = False,
     rounded_corners: bool = True,
     show_activity: bool = True,
     resize_width: int = 450,
@@ -41,7 +42,6 @@ async def generate_discord_card(
         user = await main_guild.fetch_member(user_id)
     except Exception as error:
         if isinstance(error, discord.errors.NotFound):
-
             if error.code == 10007:
                 guild_2 = client.get_guild(763348615233667082)
                 try:
@@ -82,8 +82,9 @@ async def generate_discord_card(
         activity_color=activity_color,
         show_hypesquad=show_hypesquad,
     )
-
-    if user.activity is not None and show_activity is True:
+    if pfp_only:
+        image = await card.square_image()
+    elif user.activity is not None and show_activity is True:
         image = await card.activity_image()
     else:
         image = await card.status_image()

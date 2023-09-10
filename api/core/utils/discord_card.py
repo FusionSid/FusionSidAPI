@@ -40,7 +40,6 @@ async def get_avatar(avatar_url):
 
 
 async def get_status(status):
-
     if status == discord.Status.online:
         img = Image.open("assets/images/online.png")
 
@@ -88,7 +87,6 @@ class Card:
         background_color="#161a1d",
         activity_color="white",
     ):
-
         # discord.Member Attributes
         self.id = member.id
         self.name = unicodedata.normalize("NFKD", member.name)
@@ -115,7 +113,6 @@ class Card:
 
     # Generate Status Image
     async def status_image(self):
-
         # Generate Image
         try:
             discord_image = Image.new("RGBA", (450, 170), self.background_color)
@@ -221,7 +218,6 @@ class Card:
 
     # Generate Activity Image
     async def activity_image(self):
-
         # Generate Image
         try:
             discord_image = Image.new("RGBA", (450, 170), self.background_color)
@@ -331,6 +327,38 @@ class Card:
                 font=font_1,
                 align="left",
             )
+
+        if self.rounded_corners:
+            discord_image = await add_corners(discord_image, 30)
+
+        if self.resize_length is not None and self.resize_length <= 4269:
+            width = self.resize_length
+            height = int((width / (450 / 170)))
+            discord_image = discord_image.resize((width, height))
+
+        # Save and return
+        final_image = BytesIO()
+        final_image.seek(0)
+        discord_image.save(final_image, "PNG", quality=95)
+        final_image.seek(0)
+
+        return final_image
+
+    # Generate Activity Image
+    async def square_image(self):
+        # Generate Image
+        try:
+            discord_image = Image.new("RGBA", (175, 170), self.background_color)
+        except ValueError:
+            discord_image = Image.new("RGBA", (175, 170), "#161a1d")
+
+        # Avatar
+        avatar = await get_avatar(self.avatar_url)
+        discord_image.alpha_composite(avatar, (25, 25))
+
+        # Status
+        status = await get_status(self.status)
+        discord_image.alpha_composite(status, (105, 110))
 
         if self.rounded_corners:
             discord_image = await add_corners(discord_image, 30)
