@@ -115,7 +115,13 @@ class Card:
     async def status_image(self):
         # Generate Image
         try:
-            discord_image = Image.new("RGBA", (450, 170), self.background_color)
+            discord_image = Image.new(
+                "RGBA",
+                (450, 170),
+                self.background_color
+                if self.background_color != "transparent"
+                else (255, 0, 0, 0),
+            )
         except ValueError:
             discord_image = Image.new("RGBA", (450, 170), "#161a1d")
 
@@ -211,7 +217,10 @@ class Card:
         # Save and return
         final_image = BytesIO()
         final_image.seek(0)
-        discord_image.save(final_image, "PNG", quality=95)
+        discord_image.save(
+            final_image,
+            "PNG",
+        )
         final_image.seek(0)
 
         return final_image
@@ -220,7 +229,13 @@ class Card:
     async def activity_image(self):
         # Generate Image
         try:
-            discord_image = Image.new("RGBA", (450, 170), self.background_color)
+            discord_image = Image.new(
+                "RGBA",
+                (450, 170),
+                self.background_color
+                if self.background_color != "transparent"
+                else (255, 0, 0, 0),
+            )
         except ValueError:
             discord_image = Image.new("RGBA", (450, 170), "#161a1d")
 
@@ -339,7 +354,10 @@ class Card:
         # Save and return
         final_image = BytesIO()
         final_image.seek(0)
-        discord_image.save(final_image, "PNG", quality=95)
+        discord_image.save(
+            final_image,
+            "PNG",
+        )
         final_image.seek(0)
 
         return final_image
@@ -348,19 +366,25 @@ class Card:
     async def square_image(self):
         # Generate Image
         try:
-            discord_image = Image.new("RGBA", (175, 170), self.background_color)
+            discord_image = Image.new(
+                "RGBA",
+                (140, 140),
+                self.background_color
+                if self.background_color != "transparent"
+                else (255, 0, 0, 0),
+            )
         except ValueError:
-            discord_image = Image.new("RGBA", (175, 170), "#161a1d")
+            discord_image = Image.new("RGBA", (140, 140), "#161a1d")
 
         # Avatar
         avatar = await get_avatar(self.avatar_url)
-        discord_image.alpha_composite(avatar, (25, 25))
+        discord_image.alpha_composite(avatar, (5, 5))
 
         # Status
         status = await get_status(self.status)
-        discord_image.alpha_composite(status, (105, 110))
+        discord_image.alpha_composite(status, (85, 90))
 
-        if self.rounded_corners:
+        if self.rounded_corners and not self.background_color == "transparent":
             discord_image = await add_corners(discord_image, 30)
 
         if self.resize_length is not None and self.resize_length <= 4269:
@@ -371,7 +395,10 @@ class Card:
         # Save and return
         final_image = BytesIO()
         final_image.seek(0)
-        discord_image.save(final_image, "PNG", quality=95)
+        discord_image.save(
+            final_image,
+            "PNG",
+        )
         final_image.seek(0)
 
         return final_image
