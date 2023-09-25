@@ -33,6 +33,7 @@ async def generate_discord_card(
     name_color: str = "white",
     discriminator_color: str = "white",
     activity_color: str = "white",
+    border_color: str = "red",
     background_color: str = "#161a1d",
 ):
     """Generates a cool discord card"""
@@ -81,6 +82,7 @@ async def generate_discord_card(
         background_color=background_color,
         activity_color=activity_color,
         show_hypesquad=show_hypesquad,
+        border_color=border_color,
     )
     if pfp_only:
         image = await card.square_image()

@@ -86,7 +86,9 @@ class Card:
         discriminator_color="white",
         background_color="#161a1d",
         activity_color="white",
+        border_color="red",
     ):
+        self.border_color = border_color
         # discord.Member Attributes
         self.id = member.id
         self.name = unicodedata.normalize("NFKD", member.name)
@@ -379,6 +381,27 @@ class Card:
         # Avatar
         avatar = await get_avatar(self.avatar_url)
         discord_image.alpha_composite(avatar, (5, 5))
+
+        bg = Image.new("RGBA", (140, 140), (0, 0, 0, 0))
+        draw = ImageDraw.Draw(bg)
+        rad = 62.5
+        x, y = (68, 68)
+        try:
+            draw.ellipse(
+                (x - rad, y - rad, x + rad, y + rad),
+                width=5,
+                outline=self.border_color,
+                fill=(0, 0, 0, 0),
+            )
+        except ValueError:
+            draw.ellipse(
+                (x - rad, y - rad, x + rad, y + rad),
+                width=5,
+                outline="red",
+                fill=(0, 0, 0, 0),
+            )
+
+        discord_image.alpha_composite(bg, (0, 0))
 
         # Status
         status = await get_status(self.status)
