@@ -33,7 +33,7 @@ async def generate_discord_card(
     name_color: str = "white",
     discriminator_color: str = "white",
     activity_color: str = "white",
-    border_color: str = "red",
+    border_color: None | str = None,
     background_color: str = "#161a1d",
 ):
     """Generates a cool discord card"""
