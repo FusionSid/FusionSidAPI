@@ -103,7 +103,7 @@ class Card:
         discriminator_color="white",
         background_color="#161a1d",
         activity_color="white",
-        border_color="red",
+        border_color: str | None = "red",
         show_status=True,
     ):
         self.border_color = border_color
@@ -438,6 +438,41 @@ class Card:
             width = self.resize_length
             height = int((width / (450 / 170)))
             discord_image = discord_image.resize((width, height))
+
+        # Save and return
+        final_image = BytesIO()
+        final_image.seek(0)
+        discord_image.save(
+            final_image,
+            "PNG",
+        )
+        final_image.seek(0)
+
+        return final_image
+
+    async def pfp_bgstatus(self):
+        discord_image = Image.new(
+            "RGBA",
+            (128, 128),
+            (255, 0, 0, 0),
+        )
+        avatar = await get_avatar(self.avatar_url)
+        discord_image.alpha_composite(avatar, (1, 1))
+
+        self.border_color = get_status_color(self.status)
+
+        bg = Image.new("RGBA", (127, 127), (0, 0, 0, 0))
+        draw = ImageDraw.Draw(bg)
+        rad = 62.5
+        x, y = (rad + 1, rad + 1)
+        draw.ellipse(
+            (x - rad, y - rad, x + rad, y + rad),
+            width=5,
+            outline=self.border_color,
+            fill=(0, 0, 0, 0),
+        )
+
+        discord_image.alpha_composite(bg, (0, 0))
 
         # Save and return
         final_image = BytesIO()

@@ -36,6 +36,7 @@ async def generate_discord_card(
     border_color: None | str = None,
     background_color: str = "#161a1d",
     show_status: bool = True,
+    pfpbgstatus: bool = False,
 ):
     """Generates a cool discord card"""
     main_guild = client.get_guild(942546789372952637)
@@ -86,7 +87,9 @@ async def generate_discord_card(
         border_color=border_color,
         show_status=show_status,
     )
-    if pfp_only:
+    if pfpbgstatus:
+        image = await card.pfp_bgstatus()
+    elif pfp_only:
         image = await card.square_image()
     elif user.activity is not None and show_activity is True:
         image = await card.activity_image()
