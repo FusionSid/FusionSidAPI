@@ -39,6 +39,23 @@ async def get_avatar(avatar_url):
     return img
 
 
+def get_status_color(status):
+    if status == discord.Status.online:
+        return "#3EA65C"
+    elif status == discord.Status.dnd:
+        return "#ED4045"
+    elif status == discord.Status.idle:
+        return "#F3A51A"
+    elif status == discord.Status.invisible:
+        return "#757F8D"
+    elif status == discord.Status.offline:
+        return "#757F8D"
+    elif status == discord.Status.streaming:
+        return "#3EA65C"
+    else:
+        return "#757F8D"
+
+
 async def get_status(status):
     if status == discord.Status.online:
         img = Image.open("assets/images/online.png")
@@ -385,6 +402,9 @@ class Card:
         discord_image.alpha_composite(avatar, (5, 5))
 
         if self.border_color is not None:
+            if self.border_color == "status":
+                self.border_color = get_status_color(self.status)
+
             bg = Image.new("RGBA", (140, 140), (0, 0, 0, 0))
             draw = ImageDraw.Draw(bg)
             rad = 62.5
