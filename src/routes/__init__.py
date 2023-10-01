@@ -15,6 +15,7 @@ from .converters import (
     fun_text_converting_endpoints,
     hex_converting_endpoints,
 )
+from .rce import runcode_endpoints
 
 router_list = [
     other_router,
@@ -28,5 +29,6 @@ router_list = [
     binary_converting_endpoints,
     fun_text_converting_endpoints,
     hex_converting_endpoints,
+    runcode_endpoints,
 ]
 middleware_list = []
