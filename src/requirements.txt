@@ -4,9 +4,12 @@ slowapi
 uvicorn
 fastapi
 pydantic
+aiofiles
 aioredis
+colorthief
 pre-commit
 python-jose
+pytesseract
 tortoise-orm
 python-dotenv
 pydantic[email]
