@@ -54,7 +54,7 @@ class FusionSidAPI(FastAPI):
             version=version,
             description=get_description(),
             license_info={
-                "name": "MIT",
+                "name": "MIT LICENCE",
                 "url": "https://opensource.org/licenses/MIT",
             },
         )
