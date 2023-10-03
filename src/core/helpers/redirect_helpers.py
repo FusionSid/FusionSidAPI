@@ -3,7 +3,10 @@ import random
 from hashlib import md5
 from datetime import datetime, timedelta, timezone
 
-from core import APIHTTPExceptions
+from rich import print
+
+from core.models import Redirect
+from core.helpers.exceptions import APIHTTPExceptions
 
 EXPIRE_TIME_REGEX = r"(\d+)([mhdw])"
 SECONDS_PER_UNIT = {"m": 60, "h": 3600, "d": 86400, "w": 604800}
@@ -33,5 +36,8 @@ def generate_slug_from_url(url: str) -> str:
     return "".join(random.choices(digest, k=10))
 
 
-async def cleanup_expired_task():
-    pass
+async def cleanup_expired_redirects():
+    current_time = datetime.now(timezone.utc)
+    await Redirect.filter(expires_at__lt=current_time).delete()
+
+    print("[bold red]Deleted Expired Redirect Records")

@@ -9,6 +9,7 @@ __all__ = (
     "Redirect",
     "generate_slug_from_url",
     "parse_expire_time",
+    "cleanup_expired_redirects",
 )
 
 from .db import TORTOISE_CONFIG
@@ -18,5 +19,6 @@ from .helpers import (
     get_url_json,
     generate_slug_from_url,
     parse_expire_time,
+    cleanup_expired_redirects,
 )
 from .models import FusionSidAPI, limiter, ASSETS_DIRECTORY, Redirect

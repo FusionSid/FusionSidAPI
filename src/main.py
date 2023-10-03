@@ -13,11 +13,12 @@ from os.path import dirname, join, exists
 import uvicorn
 from rich import print
 from dotenv import load_dotenv
+from fastapi_utils.tasks import repeat_every
 from tortoise.contrib.fastapi import register_tortoise
 
 from routes import router_list, middleware_list
-from core import FusionSidAPI, TORTOISE_CONFIG
 from core.helpers.exceptions import InvalidDevmodeValue
+from core import FusionSidAPI, TORTOISE_CONFIG, cleanup_expired_redirects
 
 load_dotenv()
 app = FusionSidAPI(__version__)
@@ -31,6 +32,12 @@ async def startup_event():
 @app.on_event("shutdown")
 async def shutdown_event():
     print("[bold blue]API has been shutdown!")
+
+
+@app.on_event("startup")
+@repeat_every(seconds=3600)
+async def run_cleanup_tasks():
+    await cleanup_expired_redirects()
 
 
 # add all routers
