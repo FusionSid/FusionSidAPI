@@ -16,6 +16,7 @@ from .converters import (
     hex_converting_endpoints,
 )
 from .rce import runcode_endpoints
+from .redirect import redirect_endpoints
 
 router_list = [
     other_router,
@@ -31,5 +32,6 @@ router_list = [
     hex_converting_endpoints,
     runcode_endpoints,
     color_filter_endpoint,
+    redirect_endpoints,
 ]
 middleware_list = []
