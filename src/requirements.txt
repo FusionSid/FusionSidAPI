@@ -6,11 +6,13 @@ fastapi
 pydantic
 aiofiles
 aioredis
+validators
 colorthief
 pre-commit
 python-jose
 pytesseract
 tortoise-orm
+fastapi-utils
 python-dotenv
 pydantic[email]
 python-multipart
