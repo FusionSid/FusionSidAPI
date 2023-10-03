@@ -100,6 +100,18 @@ class InvalidXProvided(HTTPException):
         super().__init__(status_code, detail)
 
 
+class XNotFound(HTTPException):
+    def __init__(self, thing: str, provided_attr_name: str, provided: Any) -> None:
+        status_code = 404
+        detail = {
+            "success": False,
+            "detail": f"No {thing} could be found from provided {provided_attr_name}",
+            "provided": provided,
+        }
+
+        super().__init__(status_code, detail)
+
+
 class APIHTTPExceptions:
     """
     All the api's http exceptions in a class so they are all together
@@ -108,3 +120,4 @@ class APIHTTPExceptions:
     INVALID_COLOR_PROVIDED = InvalidColorProvided
     FAILED_TO_FETCH_ERROR = FailedToFetchError
     INVALID_X_PROVIDED = InvalidXProvided
+    X_NOT_FOUND = XNotFound
