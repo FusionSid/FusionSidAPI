@@ -9,7 +9,7 @@ TORTOISE_CONFIG: Final = {
     "connections": {"default": os.environ["DATABASE_URL"]},
     "apps": {
         "models": {
-            "models": ["core.models.placeholder"],
+            "models": ["core.models.redirect"],
             "default_connection": "default",
         }
     },
