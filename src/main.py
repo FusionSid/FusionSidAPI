@@ -18,7 +18,7 @@ from tortoise.contrib.fastapi import register_tortoise
 
 from routes import router_list, middleware_list
 from core.helpers.exceptions import InvalidDevmodeValue
-from core import FusionSidAPI, TORTOISE_CONFIG, cleanup_expired_redirects
+from core import FusionSidAPI, TORTOISE_CONFIG, cleanup_expired_records
 
 load_dotenv()
 app = FusionSidAPI(__version__)
@@ -37,7 +37,7 @@ async def shutdown_event():
 @app.on_event("startup")
 @repeat_every(seconds=3600)
 async def run_cleanup_tasks():
-    await cleanup_expired_redirects()
+    await cleanup_expired_records()
 
 
 # add all routers

@@ -1,15 +1,12 @@
-import re
 import random
 from hashlib import md5
 from datetime import datetime, timedelta, timezone
 
 from rich import print
+from timelength import TimeLength
 
-from core.models import Redirect
+from core.models import Redirect, File
 from core.helpers.exceptions import APIHTTPExceptions
-
-EXPIRE_TIME_REGEX = r"(\d+)([mhdw])"
-SECONDS_PER_UNIT = {"m": 60, "h": 3600, "d": 86400, "w": 604800}
 
 
 def parse_expire_time(expire: str) -> datetime:
@@ -18,17 +15,11 @@ def parse_expire_time(expire: str) -> datetime:
     if expire.isnumeric():
         return current_time + timedelta(seconds=int(expire))
 
-    parsed = re.match(EXPIRE_TIME_REGEX, expire)
-    if not parsed:
+    expire_time = TimeLength(expire).total_seconds
+    if expire_time == 0:
         raise APIHTTPExceptions.INVALID_X_PROVIDED("expire time", expire)
 
-    try:
-        expire_time, suffix = parsed.groups()
-        seconds_delta = int(expire_time) * SECONDS_PER_UNIT[suffix]
-    except (ValueError, KeyError) as err:
-        raise APIHTTPExceptions.INVALID_X_PROVIDED("expire time", expire) from err
-
-    return current_time + timedelta(seconds=seconds_delta)
+    return current_time + timedelta(seconds=expire_time)
 
 
 def generate_slug_from_url(url: str) -> str:
@@ -36,8 +27,11 @@ def generate_slug_from_url(url: str) -> str:
     return "".join(random.choices(digest, k=10))
 
 
-async def cleanup_expired_redirects():
+async def cleanup_expired_records():
     current_time = datetime.now(timezone.utc)
-    await Redirect.filter(expires_at__lt=current_time).delete()
 
+    await Redirect.filter(expires_at__lt=current_time).delete()
     print("[bold red]Deleted Expired Redirect Records")
+
+    await File.filter(expires_at__lt=current_time).delete()
+    print("[bold red]Deleted Expired File Records")
