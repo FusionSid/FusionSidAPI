@@ -10,6 +10,7 @@ class File(Model):
     """
 
     slug = fields.CharField(10, pk=True, unique=True, null=False)
+    media_type = fields.CharField(32, null=False)
     data = fields.BinaryField(null=False)
     created_at = fields.DatetimeField(auto_now_add=True, null=False)
     downloads = fields.IntField()
