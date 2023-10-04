@@ -112,6 +112,28 @@ class XNotFound(HTTPException):
         super().__init__(status_code, detail)
 
 
+class FileTooLarge(HTTPException):
+    def __init__(self) -> None:
+        status_code = 400
+        detail = {
+            "success": False,
+            "detail": "The file you provided was too big",
+        }
+
+        super().__init__(status_code, detail)
+
+
+class ExpirePeriodTooLarge(HTTPException):
+    def __init__(self) -> None:
+        status_code = 400
+        detail = {
+            "success": False,
+            "detail": "The expire period you set was too long, the max is 1 week",
+        }
+
+        super().__init__(status_code, detail)
+
+
 class APIHTTPExceptions:
     """
     All the api's http exceptions in a class so they are all together
@@ -120,4 +142,6 @@ class APIHTTPExceptions:
     INVALID_COLOR_PROVIDED = InvalidColorProvided
     FAILED_TO_FETCH_ERROR = FailedToFetchError
     INVALID_X_PROVIDED = InvalidXProvided
+    FILE_TO_LARGE = FileTooLarge
+    EXPIRE_PERIOD_TOO_LARGE = ExpirePeriodTooLarge
     X_NOT_FOUND = XNotFound

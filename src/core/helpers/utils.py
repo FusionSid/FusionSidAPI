@@ -1,5 +1,6 @@
 import random
 from hashlib import md5
+from typing import Optional
 from datetime import datetime, timedelta, timezone
 
 from rich import print
@@ -9,15 +10,18 @@ from core.models import Redirect, File
 from core.helpers.exceptions import APIHTTPExceptions
 
 
-def parse_expire_time(expire: str) -> datetime:
+def parse_expire_time(expire: str, max_time: Optional[int] = None) -> datetime:
     current_time = datetime.now(timezone.utc)
 
     if expire.isnumeric():
         return current_time + timedelta(seconds=int(expire))
 
-    expire_time = TimeLength(expire).total_seconds
+    expire_time: int = TimeLength(expire).total_seconds
     if expire_time == 0:
         raise APIHTTPExceptions.INVALID_X_PROVIDED("expire time", expire)
+
+    if max_time is not None and expire_time > max_time:
+        raise APIHTTPExceptions.EXPIRE_PERIOD_TOO_LARGE()
 
     return current_time + timedelta(seconds=expire_time)
 
