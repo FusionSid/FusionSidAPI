@@ -4,7 +4,7 @@ from datetime import datetime
 
 import validators
 from datetime import timezone
-from fastapi import APIRouter, Request
+from fastapi import APIRouter, Request, Query
 from fastapi.responses import RedirectResponse
 from tortoise.exceptions import ValidationError, IntegrityError
 
@@ -18,7 +18,10 @@ redirect_endpoints = APIRouter(tags=["URL Redirect"])
 
 @redirect_endpoints.post("/api/redirect")
 async def create_redirect_link(
-    request: Request, url: str, expire: Optional[str] = None, slug: Optional[str] = None
+    request: Request,
+    url: str,
+    expire: Optional[str] = None,
+    slug: str | None = Query(default=None, max_length=10),
 ):
     """Creates a new redirect URL record"""
 
@@ -50,7 +53,10 @@ async def create_redirect_link(
 
 @redirect_endpoints.get("/r/{slug:str}")
 async def redirect_to_link(request: Request, slug: str):
-    redirect_record = await Redirect.filter(slug=slug).first()
+    try:
+        redirect_record = await Redirect.filter(slug=slug).first()
+    except (ValidationError, IntegrityError) as err:
+        raise APIHTTPExceptions.X_NOT_FOUND("redirect record", "slug", slug) from err
 
     if redirect_record is None:
         raise APIHTTPExceptions.X_NOT_FOUND("redirect record", "slug", slug)
@@ -70,7 +76,10 @@ async def redirect_to_link(request: Request, slug: str):
 
 @redirect_endpoints.get("/r/{slug:str}/stats")
 async def redirect_link_stats(request: Request, slug: str):
-    redirect_record = await Redirect.filter(slug=slug).first()
+    try:
+        redirect_record = await Redirect.filter(slug=slug).first()
+    except (ValidationError, IntegrityError) as err:
+        raise APIHTTPExceptions.X_NOT_FOUND("redirect record", "slug", slug) from err
 
     if redirect_record is None:
         raise APIHTTPExceptions.X_NOT_FOUND("redirect record", "slug", slug)
