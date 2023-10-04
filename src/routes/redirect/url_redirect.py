@@ -13,9 +13,6 @@ from core import APIHTTPExceptions, Redirect, generate_slug_from_url, parse_expi
 devmode = os.environ.get("DEVMODE", "").lower() == "true"
 BASE_URL = "http://127.0.0.1:8443" if devmode else "https://api.fusionsid.com"
 
-EXPIRE_TIME_REGEX = r"(\d+)([mhdw])"
-SECONDS_PER_UNIT = {"m": 60, "h": 3600, "d": 86400, "w": 604800}
-
 redirect_endpoints = APIRouter(tags=["URL Redirect"])
 
 
