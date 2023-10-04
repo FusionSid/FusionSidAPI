@@ -12,6 +12,7 @@ __all__ = (
     "cleanup_expired_records",
     "File",
     "ALL_MIME_TYPES",
+    "MIME_TYPE",
 )
 
 from .db import TORTOISE_CONFIG
@@ -30,4 +31,5 @@ from .models import (
     Redirect,
     File,
     ALL_MIME_TYPES,
+    MIME_TYPE,
 )
