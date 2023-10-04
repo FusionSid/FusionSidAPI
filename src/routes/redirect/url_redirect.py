@@ -8,7 +8,7 @@ from fastapi import APIRouter, Request
 from fastapi.responses import RedirectResponse
 from tortoise.exceptions import ValidationError, IntegrityError
 
-from core import APIHTTPExceptions, Redirect, generate_slug_from_url, parse_expire_time
+from core import APIHTTPExceptions, Redirect, generate_slug_from_seed, parse_expire_time
 
 devmode = os.environ.get("DEVMODE", "").lower() == "true"
 BASE_URL = "http://127.0.0.1:8443" if devmode else "https://api.fusionsid.com"
@@ -26,7 +26,7 @@ async def create_redirect_link(
         raise APIHTTPExceptions.INVALID_X_PROVIDED("redirect URL", url)
 
     if slug is None:
-        slug = generate_slug_from_url(url)
+        slug = generate_slug_from_seed(url)
 
     record_data = {"slug": slug, "url": url, "views": 1, "expires_at": None}
 
@@ -37,7 +37,7 @@ async def create_redirect_link(
     try:
         new_record = await Redirect.create(**record_data)
     except (ValidationError, IntegrityError):
-        record_data["slug"] = generate_slug_from_url(url)
+        record_data["slug"] = generate_slug_from_seed(url)
         new_record = await Redirect.create(**record_data)
 
     return {

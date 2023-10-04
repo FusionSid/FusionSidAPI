@@ -22,8 +22,9 @@ def parse_expire_time(expire: str) -> datetime:
     return current_time + timedelta(seconds=expire_time)
 
 
-def generate_slug_from_url(url: str) -> str:
-    digest = md5(url.encode()).hexdigest()
+def generate_slug_from_seed(seed: str | bytes) -> str:
+    data = seed.encode() if isinstance(seed, str) else seed
+    digest = md5(data).hexdigest()
     return "".join(random.choices(digest, k=10))
 
 

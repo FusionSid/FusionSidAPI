@@ -7,7 +7,7 @@ __all__ = (
     "get_url_image",
     "get_url_json",
     "Redirect",
-    "generate_slug_from_url",
+    "generate_slug_from_seed",
     "parse_expire_time",
     "cleanup_expired_records",
     "File",
@@ -19,7 +19,7 @@ from .helpers import (
     APIHTTPExceptions,
     get_url_image,
     get_url_json,
-    generate_slug_from_url,
+    generate_slug_from_seed,
     parse_expire_time,
     cleanup_expired_records,
 )
