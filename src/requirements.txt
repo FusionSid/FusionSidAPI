@@ -2,12 +2,14 @@ rich
 qrcode
 slowapi
 uvicorn
+aiohttp
 fastapi
 pydantic
 aiofiles
 aioredis
 validators
 colorthief
+timelength
 pre-commit
 python-jose
 pytesseract
