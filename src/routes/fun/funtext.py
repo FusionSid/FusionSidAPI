@@ -21,6 +21,9 @@ CACHE = {
     "programming_excuses": [],
     "jokes": [],
     "titled_jokes": [],
+    "topics": [],
+    "would_you_rather": [],
+    "never_have_i_ever": [],
 }
 
 
@@ -110,3 +113,24 @@ async def random_programming_excuse(request: Request):
     """Gets a random titled programming joke"""
 
     return {"success": True, "excuse": await get_data("programming_excuses")}
+
+
+@fun_text_endpoints.get("/topic")
+async def random_topic(request: Request):
+    """Gets a random topic"""
+
+    return {"success": True, "topic": await get_data("topics")}
+
+
+@fun_text_endpoints.get("/never-have-i-ever")
+async def random_never_have_i_ever(request: Request):
+    """Gets a random never have I ever question"""
+
+    return {"success": True, "question": await get_data("never_have_i_ever")}
+
+
+@fun_text_endpoints.get("/would-you-rather")
+async def random_would_you_rather(request: Request):
+    """Gets a random would you rather question"""
+
+    return {"success": True, "question": await get_data("would_you_rather")}
