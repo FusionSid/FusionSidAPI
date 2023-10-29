@@ -13,6 +13,7 @@ __all__ = (
     "File",
     "ALL_MIME_TYPES",
     "MIME_TYPE",
+    "client",
 )
 
 from .db import TORTOISE_CONFIG
@@ -23,6 +24,7 @@ from .helpers import (
     generate_slug_from_seed,
     parse_expire_time,
     cleanup_expired_records,
+    client,
 )
 from .models import (
     FusionSidAPI,

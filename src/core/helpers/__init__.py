@@ -5,6 +5,7 @@ __all__ = (
     "generate_slug_from_seed",
     "parse_expire_time",
     "cleanup_expired_records",
+    "client",
 )
 
 from .exceptions import APIHTTPExceptions
@@ -14,3 +15,4 @@ from .utils import (
     parse_expire_time,
     cleanup_expired_records,
 )
+from .bot import client
