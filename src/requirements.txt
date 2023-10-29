@@ -19,4 +19,5 @@ slowapi==0.1.8
 timelength==1.1.7
 tortoise-orm==0.1.1
 uvicorn==0.17.6
+py-cord==2.4.1
 validators==0.20.0
