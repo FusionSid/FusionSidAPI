@@ -50,6 +50,15 @@ class InvalidDevmodeValue(RichBaseException):
         sys.exit(1)
 
 
+class NoBotToken(RichBaseException):
+    def __init__(self) -> None:
+        super().__init__(
+            "Not Discord Token Provided!!!",
+            "A discord token must be provided to start up the bot",
+        )
+        sys.exit(1)
+
+
 class NoAssetsDirectory(RichBaseException):
     def __init__(
         self,
