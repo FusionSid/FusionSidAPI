@@ -7,6 +7,7 @@ __author__ = ["FusionSid"]
 __licence__ = "MIT License"
 
 import os
+import asyncio
 from typing import Final
 from os.path import dirname, join, exists
 
@@ -17,15 +18,22 @@ from fastapi_utils.tasks import repeat_every
 from tortoise.contrib.fastapi import register_tortoise
 
 from routes import router_list, middleware_list
-from core.helpers.exceptions import InvalidDevmodeValue
-from core import FusionSidAPI, TORTOISE_CONFIG, cleanup_expired_records
+from core.helpers.exceptions import InvalidDevmodeValue, NoBotToken
+from core import FusionSidAPI, TORTOISE_CONFIG, cleanup_expired_records, client
 
 load_dotenv()
-app = FusionSidAPI(__version__)
+
+app: Final = FusionSidAPI(__version__)
+discord_token: Final = os.getenv("BOT_TOKEN")
 
 
 @app.on_event("startup")
 async def startup_event():
+    if discord_token is None:
+        raise NoBotToken
+
+    asyncio.create_task(client.start(discord_token))
+
     print("[bold blue]API has started!")
 
 
