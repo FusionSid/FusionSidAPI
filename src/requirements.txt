@@ -17,7 +17,7 @@ qrcode==7.3.1
 rich==13.6.0
 slowapi==0.1.8
 timelength==1.1.7
-tortoise-orm==0.1.1
+tortoise-orm==0.20.0
 uvicorn==0.17.6
 py-cord==2.4.1
 validators==0.20.0
