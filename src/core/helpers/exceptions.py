@@ -143,6 +143,19 @@ class ExpirePeriodTooLarge(HTTPException):
         super().__init__(status_code, detail)
 
 
+class DiscordUserNotFound(HTTPException):
+    def __init__(self, provided: int) -> None:
+        status_code = 404
+        detail = {
+            "success": False,
+            "detail": "Could not find discord user with provided user id",
+            "provided": provided,
+            "fix": "Make sure user is in the discord server: https://discord.gg/p9GuT5hakm",
+        }
+
+        super().__init__(status_code, detail)
+
+
 class APIHTTPExceptions:
     """
     All the api's http exceptions in a class so they are all together
@@ -154,3 +167,4 @@ class APIHTTPExceptions:
     FILE_TO_LARGE = FileTooLarge
     EXPIRE_PERIOD_TOO_LARGE = ExpirePeriodTooLarge
     X_NOT_FOUND = XNotFound
+    DISCORD_USER_NOT_FOUND = DiscordUserNotFound
