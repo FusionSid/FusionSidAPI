@@ -18,6 +18,7 @@ from .converters import (
 from .rce import runcode_endpoints
 from .redirect import redirect_endpoints
 from .filehost import filehost_endpoints
+from .discord import discord_card_endpoints
 
 router_list = [
     other_router,
@@ -35,5 +36,7 @@ router_list = [
     color_filter_endpoint,
     redirect_endpoints,
     filehost_endpoints,
+    discord_card_endpoints,
 ]
+
 middleware_list = []
