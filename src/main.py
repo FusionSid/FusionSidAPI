@@ -64,7 +64,7 @@ register_tortoise(
     add_exception_handlers=True,
 )
 
-PORT: Final = 8443
+PORT: Final = 8443 if (port := os.getenv("PORT")) is None else int(port)
 SSL_CERTFILE_PATH: Final = join(dirname(__file__), "cert.pem")
 SSL_KEYFILE_PATH: Final = join(dirname(__file__), "key.pem")
 
