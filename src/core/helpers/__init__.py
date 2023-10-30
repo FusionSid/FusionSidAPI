@@ -6,6 +6,7 @@ __all__ = (
     "parse_expire_time",
     "cleanup_expired_records",
     "client",
+    "crop_image_to_circle",
 )
 
 from .exceptions import APIHTTPExceptions
@@ -16,3 +17,4 @@ from .utils import (
     cleanup_expired_records,
 )
 from .bot import client
+from .pillow_utils import crop_image_to_circle
