@@ -21,3 +21,4 @@ tortoise-orm==0.20.0
 uvicorn==0.17.6
 py-cord==2.4.1
 validators==0.20.0
+numpy==1.26.1
