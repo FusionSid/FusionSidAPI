@@ -11,7 +11,7 @@ from tortoise.exceptions import ValidationError, IntegrityError
 from core import APIHTTPExceptions, Redirect, generate_slug_from_seed, parse_expire_time
 
 devmode = os.environ.get("DEVMODE", "").lower() == "true"
-BASE_URL = "http://127.0.0.1:8443" if devmode else "https://api.fusionsid.com"
+BASE_URL = "http://127.0.0.1:8443" if devmode else "https://api2.fusionsid.com"
 
 redirect_endpoints = APIRouter(tags=["URL Redirect"])
 

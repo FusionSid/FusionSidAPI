@@ -17,7 +17,7 @@ from core import (
 )
 
 devmode = os.environ.get("DEVMODE", "").lower() == "true"
-BASE_URL = "http://127.0.0.1:8443" if devmode else "https://api.fusionsid.com"
+BASE_URL = "http://127.0.0.1:8443" if devmode else "https://api2.fusionsid.com"
 
 MAX_HOSTING_PERIOD_SECONDS = 604_800
 MAX_FILE_SIZE_BYTES = 50_000_000
