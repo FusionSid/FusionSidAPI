@@ -2,9 +2,9 @@ from io import BytesIO
 from typing import Final, Optional
 
 from PIL import Image
-from fastapi import APIRouter, Request
 from discord import NotFound, HTTPException, Status
 from fastapi.responses import RedirectResponse, StreamingResponse
+from fastapi import APIRouter, Request, HTTPException as FastAPIHTTPException
 
 from core import APIHTTPExceptions, client, get_url_image
 from core.helpers import crop_image_to_circle
@@ -36,6 +36,15 @@ async def discord_server():
 async def discord_pfp_image(
     request: Request, user_id: int, border_width: int = 5, space: Optional[int] = None
 ):
+    if not client.is_ready():
+        return FastAPIHTTPException(
+            status_code=503,
+            detail={
+                "success": False,
+                "detail": "Hol' up my guy, the bot ain't ready yet",
+            },
+        )
+
     user = await fetch_user(user_id)
 
     profile_picture_bytes = await get_url_image(user.display_avatar.url)
