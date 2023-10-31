@@ -1,8 +1,5 @@
-aioredis
-pre-commit
-python-jose
-pydantic[email]
-python-multipart
+pre-commit==3.1.1
+python-multipart==0.0.6
 tortoise-orm[asyncpg]
 aiofiles==0.6.0
 aiohttp==3.8.3
