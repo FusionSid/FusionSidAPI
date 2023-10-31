@@ -19,8 +19,6 @@ from fastapi import FastAPI
 from dotenv import load_dotenv
 from fastapi_utils.tasks import repeat_every
 
-# from tortoise.contrib.fastapi import register_tortoise
-
 from routes import router_list, middleware_list
 from core.helpers.exceptions import InvalidDevmodeValue, NoBotToken
 from core import FusionSidAPI, TORTOISE_CONFIG, cleanup_expired_records, client
