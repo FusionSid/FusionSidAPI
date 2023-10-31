@@ -19,12 +19,22 @@ def crop_image_to_circle(image: Image.Image, border: bool = False, **kwargs):
 
     circle_image = Image.fromarray(np_image_array)
 
+    if (space := kwargs.get("space")) is not None:
+        final_image = Image.new(
+            "RGBA",
+            (circle_image.width + space, circle_image.height + space),
+            (0, 0, 0, 0),
+        )
+        final_image.paste(circle_image, (space // 2, space // 2))
+    else:
+        final_image = circle_image
+
     if border:
-        draw = ImageDraw.Draw(circle_image)
+        draw = ImageDraw.Draw(final_image)
         draw.ellipse(
-            (0, 0, *circle_image.size),
+            (0, 0, *final_image.size),
             outline=kwargs.get("border_color", "#000000"),
             width=kwargs.get("border_width", 5),
         )
 
-    return circle_image
+    return final_image

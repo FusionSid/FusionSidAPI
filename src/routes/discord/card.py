@@ -1,5 +1,5 @@
 from io import BytesIO
-from typing import Final
+from typing import Final, Optional
 
 from PIL import Image
 from fastapi import APIRouter, Request
@@ -33,7 +33,9 @@ async def discord_server():
 
 
 @discord_card_endpoints.get("/pfp")
-async def discord_pfp_image(request: Request, user_id: int, border_width: int = 5):
+async def discord_pfp_image(
+    request: Request, user_id: int, border_width: int = 5, space: Optional[int] = None
+):
     user = await fetch_user(user_id)
 
     profile_picture_bytes = await get_url_image(user.display_avatar.url)
@@ -48,6 +50,7 @@ async def discord_pfp_image(request: Request, user_id: int, border_width: int = 
         border=True,
         border_color=STATUS_COLORS.get(user.status, STATUS_COLORS[Status.offline]),
         border_width=border_width,
+        space=space,
     )
 
     output_image_buffer = BytesIO()
