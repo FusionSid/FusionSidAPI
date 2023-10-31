@@ -9,13 +9,17 @@ __licence__ = "MIT License"
 import os
 import asyncio
 from typing import Final
+from tortoise import Tortoise
 from os.path import dirname, join, exists
+from contextlib import asynccontextmanager
 
 import uvicorn
 from rich import print
+from fastapi import FastAPI
 from dotenv import load_dotenv
 from fastapi_utils.tasks import repeat_every
-from tortoise.contrib.fastapi import register_tortoise
+
+# from tortoise.contrib.fastapi import register_tortoise
 
 from routes import router_list, middleware_list
 from core.helpers.exceptions import InvalidDevmodeValue, NoBotToken
@@ -23,46 +27,50 @@ from core import FusionSidAPI, TORTOISE_CONFIG, cleanup_expired_records, client
 
 load_dotenv()
 
-app: Final = FusionSidAPI(__version__)
-discord_token: Final = os.getenv("BOT_TOKEN")
 
+@asynccontextmanager
+async def lifespan_event(app: FastAPI):
+    """
+    This function will run when the api starts up / shutsdown
+    """
 
-@app.on_event("startup")
-async def startup_event():
     if discord_token is None:
         raise NoBotToken
 
     asyncio.create_task(client.start(discord_token))
 
+    # add all routers
+    for route in router_list:
+        app.include_router(router=route)
+
+    # add all middleware
+    for middleware in middleware_list:
+        app.add_middleware(middleware)
+
+    # connect to db through tortoise orm
+    await Tortoise.init(
+        config=TORTOISE_CONFIG,
+    )
+
+    await cleanup_expired_records()
+
     print("[bold blue]API has started!")
 
+    yield
 
-@app.on_event("shutdown")
-async def shutdown_event():
+    # Will run when the api shutsdown
+    await Tortoise.close_connections()
     print("[bold blue]API has been shutdown!")
 
 
-@app.on_event("startup")
 @repeat_every(seconds=3600)
 async def run_cleanup_tasks():
     await cleanup_expired_records()
 
 
-# add all routers
-for route in router_list:
-    app.include_router(router=route)
+app: Final = FusionSidAPI(__version__, lifespan=lifespan_event)
+discord_token: Final = os.getenv("BOT_TOKEN")
 
-# add all middleware
-for middleware in middleware_list:
-    app.add_middleware(middleware)
-
-# connect to db through tortoise orm
-register_tortoise(
-    app,
-    config=TORTOISE_CONFIG,
-    generate_schemas=True,
-    add_exception_handlers=True,
-)
 
 PORT: Final = 8443 if (port := os.getenv("PORT")) is None else int(port)
 SSL_CERTFILE_PATH: Final = join(dirname(__file__), "cert.pem")

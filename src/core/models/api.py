@@ -47,7 +47,7 @@ class FusionSidAPI(FastAPI):
     Replace "The" with what the API is for (in like one word)
     """
 
-    def __init__(self, version: str) -> None:
+    def __init__(self, version: str, **kwargs) -> None:
         # swagger docs metadata
         super().__init__(
             title="FusionSid's REST API",
@@ -57,6 +57,7 @@ class FusionSidAPI(FastAPI):
                 "name": "MIT LICENCE",
                 "url": "https://opensource.org/licenses/MIT",
             },
+            **kwargs,
         )
 
         # cors support
